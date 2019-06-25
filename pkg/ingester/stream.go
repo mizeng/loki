@@ -35,12 +35,24 @@ var (
 
 		Buckets: prometheus.LinearBuckets(4096, 2048, 6),
 	})
+	bytesIngested = prometheus.NewCounter(prometheus.CounterOpts{
+		Namespace: "loki",
+		Name:      "ingeseter_bytes_received_total",
+		Help:      "The total number of uncompressed bytes received per tenant",
+	})
+	linesIngested = prometheus.NewCounter(prometheus.CounterOpts{
+		Namespace: "loki",
+		Name:      "ingester_lines_received_total",
+		Help:      "The total number of lines received per tenant",
+	})
 )
 
 func init() {
 	prometheus.MustRegister(chunksCreatedTotal)
 	prometheus.MustRegister(chunksFlushedTotal)
 	prometheus.MustRegister(samplesPerChunk)
+	prometheus.MustRegister(bytesIngested)
+	prometheus.MustRegister(linesIngested)
 }
 
 type stream struct {
@@ -86,6 +98,10 @@ func (s *stream) Push(_ context.Context, entries []logproto.Entry) error {
 	// we still want to append the later ones.
 	var appendErr error
 	for i := range entries {
+
+		linesIngested.Inc()
+		bytesIngested.Add(float64(len(entries[i].Line)))
+
 		chunk := &s.chunks[len(s.chunks)-1]
 		if chunk.closed || !chunk.chunk.SpaceFor(&entries[i]) {
 			chunk.closed = true
