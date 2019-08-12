@@ -11,8 +11,8 @@ ingester:
         store: inmemory
       replication_factor: 1
     final_sleep: 0s
-  chunk_idle_period: 5m
-  chunk_retain_period: 30s
+  chunk_idle_period: 10s
+  chunk_retain_period: 10s
 
 schema_config:
   configs:
@@ -22,7 +22,7 @@ schema_config:
     schema: v9
     index:
       prefix: index_
-      period: 168h
+      period: 1h
 
 storage_config:
   boltdb:
@@ -30,6 +30,7 @@ storage_config:
 
   filesystem:
     directory: /tmp/loki/chunks
+    dir_from_label: namespace
 
 limits_config:
   enforce_metric_name: false
@@ -50,6 +51,6 @@ table_manager:
     inactive_write_throughput: 0
     provisioned_read_throughput: 0
     provisioned_write_throughput: 0
-  retention_deletes_enabled: false
-  retention_period: 0
+  retention_deletes_enabled: true
+  retention_period: 2h
 

@@ -20,11 +20,14 @@ import (
 // FSConfig is the config for a FSObjectClient.
 type FSConfig struct {
 	Directory string `yaml:"directory"`
+	DirFromLabel string `yaml:"dir_from_label"`
 }
 
 // RegisterFlags registers flags.
 func (cfg *FSConfig) RegisterFlags(f *flag.FlagSet) {
-	f.StringVar(&cfg.Directory, "local.chunk-directory", "", "Directory to store chunks in.")
+	f.StringVar(&cfg.Directory, "local.chunk-directory", "", "Base directory to store chunks in.")
+	f.StringVar(&cfg.DirFromLabel, "local.dir-from-label", "",
+		"Additional directory to distribute chunks. Its name is retrieved from one given label.")
 }
 
 // FSObjectClient holds config for filesystem as object store
@@ -48,14 +51,34 @@ func (FSObjectClient) Stop() {}
 
 // PutChunks implements ObjectClient
 func (f *FSObjectClient) PutChunks(_ context.Context, chunks []chunk.Chunk) error {
+	dirFromLabel := ""
+	if len(f.cfg.DirFromLabel) > 0 {
+		dirFromLabel = f.cfg.DirFromLabel
+	}
 	for i := range chunks {
 		buf, err := chunks[i].Encoded()
 		if err != nil {
 			return err
 		}
 
+		directory := f.cfg.Directory
+		if len(dirFromLabel) > 0 {
+			// need to store chunks to additional dir
+			dirName := chunks[i].Metric.Get(dirFromLabel)
+			level.Debug(pkgUtil.Logger).Log("msg", "showing dirname", dirFromLabel, dirName)
+			if len(dirName) > 0 {
+				directory = path.Join(directory, dirName)
+			} else { // can not find
+				directory = path.Join(directory, "default")
+			}
+
+			if err := ensureDirectory(directory); err != nil {
+				return err
+			}
+		}
+
 		filename := base64.StdEncoding.EncodeToString([]byte(chunks[i].ExternalKey()))
-		if err := ioutil.WriteFile(path.Join(f.cfg.Directory, filename), buf, 0644); err != nil {
+		if err := ioutil.WriteFile(path.Join(directory, filename), buf, 0644); err != nil {
 			return err
 		}
 	}
