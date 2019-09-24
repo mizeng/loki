@@ -245,7 +245,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:573b3a3fbdc3f803b40d99f7a917db72b96ef00f5da75641cbfb01e9e5eec1c9"
+  digest = "1:5b4b8e3b9d5c42e85ad70e57c617082effb40e0f282817d51e4b63e5353e606b"
   name = "github.com/cortexproject/cortex"
   packages = [
     "pkg/chunk",
@@ -275,7 +275,7 @@
     "pkg/util/validation",
   ]
   pruneopts = "UT"
-  revision = "68603f14e3e4cdbc0b90ff5af4f544f2c6e457fa"
+  revision = "05b14ecf5f6d818349331c04249a056839f0a564"
 
 [[projects]]
   digest = "1:ffe9824d294da03b391f44e1ae8281281b4afc1bdaa9588c9097785e3af10cec"
@@ -386,6 +386,14 @@
   packages = ["."]
   pruneopts = "UT"
   revision = "9f541cc9db5d55bce703bd99987c9d5cb8eea45e"
+  version = "v1.0.0"
+
+[[projects]]
+  digest = "1:edb569dd02419a41ddd98768cc0e7aec922ef19dae139731e5ca750afcf6f4c5"
+  name = "github.com/edsrzf/mmap-go"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "188cc3b666ba704534fa4f96e9e61f21f1e1ba7c"
   version = "v1.0.0"
 
 [[projects]]
@@ -607,6 +615,48 @@
   pruneopts = "UT"
   revision = "66b9c49e59c6c48f0ffce28c2d8b8a5678502c6d"
   version = "v1.4.0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:11cf8d5da878123daf3f1deefaf4aa62f5dbc91481326d97953780a7a77cc1ec"
+  name = "github.com/grafana/loki"
+  packages = [
+    "pkg/canary/comparator",
+    "pkg/canary/reader",
+    "pkg/canary/writer",
+    "pkg/chunkenc",
+    "pkg/distributor",
+    "pkg/helpers",
+    "pkg/ingester",
+    "pkg/ingester/client",
+    "pkg/iter",
+    "pkg/logcli/client",
+    "pkg/logcli/labelquery",
+    "pkg/logcli/output",
+    "pkg/logcli/query",
+    "pkg/logentry/metric",
+    "pkg/logentry/stages",
+    "pkg/logproto",
+    "pkg/logql",
+    "pkg/loki",
+    "pkg/promtail",
+    "pkg/promtail/api",
+    "pkg/promtail/client",
+    "pkg/promtail/client/fake",
+    "pkg/promtail/config",
+    "pkg/promtail/positions",
+    "pkg/promtail/scrape",
+    "pkg/promtail/server",
+    "pkg/promtail/server/ui",
+    "pkg/promtail/targets",
+    "pkg/querier",
+    "pkg/storage",
+    "pkg/util",
+    "pkg/util/flagext",
+    "pkg/util/validation",
+  ]
+  pruneopts = "UT"
+  revision = "ec5bc7054d704740a13daf154efb29ad7e75bee1"
 
 [[projects]]
   digest = "1:1168584a5881d371e96cb0e66ef6db71d7cef0856cc7f311490bc856627f8328"
@@ -953,7 +1003,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:7b7d0a4d2eb73417daf29284e6152edada0f463e2984090284cee388108c9b49"
+  digest = "1:8362098a3caa377c329d96fdce74dfcbc0b718962cc7dcff588a36a0759b418c"
   name = "github.com/prometheus/common"
   packages = [
     "config",
@@ -963,7 +1013,7 @@
     "version",
   ]
   pruneopts = "UT"
-  revision = "2998b132700a7d019ff618c06a234b47c1f3f681"
+  revision = "287d3e634a1e550c9e463dd7e5a75a422c614505"
 
 [[projects]]
   digest = "1:366f5aa02ff6c1e2eccce9ca03a22a6d983da89eecff8a89965401764534eb7c"
@@ -978,7 +1028,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:43edb14ccbe0d18f38bd55511250c39ccc3917c64a514a0e791408ac19a71558"
+  digest = "1:f106d32387f809eb1ef229211e6f64eecf8ab556bee2c10897622e7623c1e81b"
   name = "github.com/prometheus/prometheus"
   packages = [
     "discovery",
@@ -1008,30 +1058,26 @@
     "storage",
     "storage/tsdb",
     "template",
+    "tsdb",
+    "tsdb/chunkenc",
+    "tsdb/chunks",
+    "tsdb/encoding",
+    "tsdb/errors",
+    "tsdb/fileutil",
+    "tsdb/goversion",
+    "tsdb/index",
+    "tsdb/labels",
+    "tsdb/record",
+    "tsdb/tombstones",
+    "tsdb/wal",
     "util/stats",
     "util/strutil",
+    "util/teststorage",
     "util/testutil",
     "util/treecache",
   ]
   pruneopts = "UT"
-  revision = "e23fa22233cfbaa4fcea7abcd4e191ce5258870b"
-
-[[projects]]
-  digest = "1:7aa5ae0ef5452ce26522f16677edee5016afeaa689f77e62e6b46374463b1884"
-  name = "github.com/prometheus/tsdb"
-  packages = [
-    ".",
-    "chunkenc",
-    "chunks",
-    "encoding",
-    "fileutil",
-    "index",
-    "labels",
-    "wal",
-  ]
-  pruneopts = "UT"
-  revision = "8921f18eb3e34d1e2a752ae0df5bbb94dc367cc7"
-  version = "v0.6.1"
+  revision = "1e62435960fcd4991e320fc055de412e0cd7ed9f"
 
 [[projects]]
   branch = "master"
@@ -1850,6 +1896,39 @@
     "github.com/golang/snappy",
     "github.com/gorilla/mux",
     "github.com/gorilla/websocket",
+    "github.com/grafana/loki/pkg/canary/comparator",
+    "github.com/grafana/loki/pkg/canary/reader",
+    "github.com/grafana/loki/pkg/canary/writer",
+    "github.com/grafana/loki/pkg/chunkenc",
+    "github.com/grafana/loki/pkg/distributor",
+    "github.com/grafana/loki/pkg/helpers",
+    "github.com/grafana/loki/pkg/ingester",
+    "github.com/grafana/loki/pkg/ingester/client",
+    "github.com/grafana/loki/pkg/iter",
+    "github.com/grafana/loki/pkg/logcli/client",
+    "github.com/grafana/loki/pkg/logcli/labelquery",
+    "github.com/grafana/loki/pkg/logcli/output",
+    "github.com/grafana/loki/pkg/logcli/query",
+    "github.com/grafana/loki/pkg/logentry/metric",
+    "github.com/grafana/loki/pkg/logentry/stages",
+    "github.com/grafana/loki/pkg/logproto",
+    "github.com/grafana/loki/pkg/logql",
+    "github.com/grafana/loki/pkg/loki",
+    "github.com/grafana/loki/pkg/promtail",
+    "github.com/grafana/loki/pkg/promtail/api",
+    "github.com/grafana/loki/pkg/promtail/client",
+    "github.com/grafana/loki/pkg/promtail/client/fake",
+    "github.com/grafana/loki/pkg/promtail/config",
+    "github.com/grafana/loki/pkg/promtail/positions",
+    "github.com/grafana/loki/pkg/promtail/scrape",
+    "github.com/grafana/loki/pkg/promtail/server",
+    "github.com/grafana/loki/pkg/promtail/server/ui",
+    "github.com/grafana/loki/pkg/promtail/targets",
+    "github.com/grafana/loki/pkg/querier",
+    "github.com/grafana/loki/pkg/storage",
+    "github.com/grafana/loki/pkg/util",
+    "github.com/grafana/loki/pkg/util/flagext",
+    "github.com/grafana/loki/pkg/util/validation",
     "github.com/grpc-ecosystem/grpc-opentracing/go/otgrpc",
     "github.com/hpcloud/tail",
     "github.com/jmespath/go-jmespath",
