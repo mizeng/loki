@@ -245,13 +245,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:5b4b8e3b9d5c42e85ad70e57c617082effb40e0f282817d51e4b63e5353e606b"
+  digest = "1:6948cbed1a87506d0c615d77cc33ab592515754b980f2cc325951cb3423ac676"
   name = "github.com/cortexproject/cortex"
   packages = [
     "pkg/chunk",
     "pkg/chunk/aws",
     "pkg/chunk/cache",
     "pkg/chunk/cassandra",
+    "pkg/chunk/elastic",
     "pkg/chunk/encoding",
     "pkg/chunk/gcp",
     "pkg/chunk/local",
@@ -275,7 +276,8 @@
     "pkg/util/validation",
   ]
   pruneopts = "UT"
-  revision = "05b14ecf5f6d818349331c04249a056839f0a564"
+  revision = "cbb1a5b20fdfc6dd7846f065842919c01465223f"
+  source = "https://github.com/mizeng/cortex.git"
 
 [[projects]]
   digest = "1:ffe9824d294da03b391f44e1ae8281281b4afc1bdaa9588c9097785e3af10cec"
@@ -617,8 +619,8 @@
   version = "v1.4.0"
 
 [[projects]]
-  branch = "master"
-  digest = "1:11cf8d5da878123daf3f1deefaf4aa62f5dbc91481326d97953780a7a77cc1ec"
+  branch = "sync_cortex_20190923"
+  digest = "1:e7473738f9059dd8d999d18ce78316b40cd9cdbeb138d9899a7b288bd786b6cd"
   name = "github.com/grafana/loki"
   packages = [
     "pkg/canary/comparator",
@@ -656,7 +658,8 @@
     "pkg/util/validation",
   ]
   pruneopts = "UT"
-  revision = "ec5bc7054d704740a13daf154efb29ad7e75bee1"
+  revision = "75adaee26cb29713bd5979a3ed3504ed90464d84"
+  source = "https://github.com/mizeng/loki.git"
 
 [[projects]]
   digest = "1:1168584a5881d371e96cb0e66ef6db71d7cef0856cc7f311490bc856627f8328"
@@ -819,6 +822,19 @@
   revision = "b84e30acd515aadc4b783ad4ff83aff3299bdfe0"
 
 [[projects]]
+  digest = "1:891f9c13236eb1b6d1abd4fe01e6c9be51bcc65f04da0dfa4bfdf356374e98c4"
+  name = "github.com/mailru/easyjson"
+  packages = [
+    ".",
+    "buffer",
+    "jlexer",
+    "jwriter",
+  ]
+  pruneopts = "UT"
+  revision = "1b2b06f5f209fea48ff5922d8bfb2b9ed5d8f00b"
+  version = "v0.7.0"
+
+[[projects]]
   digest = "1:c658e84ad3916da105a761660dcaeb01e63416c8ec7bc62256a9b411a05fcd67"
   name = "github.com/mattn/go-colorable"
   packages = ["."]
@@ -905,6 +921,18 @@
   pruneopts = "UT"
   revision = "02a8604050d8466dd915307496174adb9be4593a"
   version = "v1.3.1"
+
+[[projects]]
+  digest = "1:cfcd381c8640b6dfd5a298ebbeb9e06a5e3059de6075522bde3a0d734eedc90f"
+  name = "github.com/olivere/elastic"
+  packages = [
+    ".",
+    "config",
+    "uritemplates",
+  ]
+  pruneopts = "UT"
+  revision = "91416a867f9a95cdf7332dd1e73264359d0d5c7e"
+  version = "v6.2.23"
 
 [[projects]]
   digest = "1:ee4d4af67d93cc7644157882329023ce9a7bcfce956a079069a9405521c7cc8d"

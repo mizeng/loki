@@ -252,7 +252,7 @@ type Bucket struct {
 	hashKey   string
 }
 
-func (cfg *PeriodConfig) hourlyBuckets(from, through model.Time, userID string) []Bucket {
+func (cfg *PeriodConfig) hourlyBuckets(from, through model.Time, userID, namespace string) []Bucket {
 	var (
 		fromHour    = from.Unix() / secondsInHour
 		throughHour = through.Unix() / secondsInHour
@@ -264,31 +264,38 @@ func (cfg *PeriodConfig) hourlyBuckets(from, through model.Time, userID string) 
 		throughHour--
 	}
 
+	if len(namespace) == 0 {
+		namespace = "defaultns"
+	}
+	
 	for i := fromHour; i <= throughHour; i++ {
 		relativeFrom := util.Max64(0, int64(from)-(i*millisecondsInHour))
 		relativeThrough := util.Min64(millisecondsInHour, int64(through)-(i*millisecondsInHour))
 		result = append(result, Bucket{
 			from:      uint32(relativeFrom),
 			through:   uint32(relativeThrough),
-			tableName: cfg.IndexTables.TableFor(model.TimeFromUnix(i * secondsInHour)),
+			tableName: namespace + "_" + cfg.IndexTables.TableFor(model.TimeFromUnix(i * secondsInHour)),
 			hashKey:   fmt.Sprintf("%s:%d", userID, i),
 		})
 	}
 	return result
 }
 
-func (cfg *PeriodConfig) dailyBuckets(from, through model.Time, userID string) []Bucket {
+func (cfg *PeriodConfig) dailyBuckets(from, through model.Time, userID, namespace string) []Bucket {
 	var (
 		fromDay    = from.Unix() / secondsInDay
 		throughDay = through.Unix() / secondsInDay
 		result     = []Bucket{}
 	)
-
+	
 	// If through ends on 00:00 of the day, don't include the upcoming day
 	if through.Unix()%secondsInDay == 0 {
 		throughDay--
 	}
-
+	
+	if len(namespace) == 0 {
+		namespace = "defaultns"
+	}
 	for i := fromDay; i <= throughDay; i++ {
 		// The idea here is that the hash key contains the bucket start time (rounded to
 		// the nearest day).  The range key can contain the offset from that, to the
@@ -305,7 +312,7 @@ func (cfg *PeriodConfig) dailyBuckets(from, through model.Time, userID string) [
 		result = append(result, Bucket{
 			from:      uint32(relativeFrom),
 			through:   uint32(relativeThrough),
-			tableName: cfg.IndexTables.TableFor(model.TimeFromUnix(i * secondsInDay)),
+			tableName: namespace + "_" + cfg.IndexTables.TableFor(model.TimeFromUnix(i * secondsInDay)),
 			hashKey:   fmt.Sprintf("%s:d%d", userID, i),
 		})
 	}

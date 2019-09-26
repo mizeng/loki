@@ -78,7 +78,17 @@ func (s *store) LazyQuery(ctx context.Context, req logql.SelectParams) (iter.Ent
 	if err != nil {
 		return nil, err
 	}
-	chks, fetchers, err := s.GetChunkRefs(ctx, userID, from, through, matchers...)
+
+	// Fetch namespace if it exists in matchers
+	namespace := "defaultns"
+	for _, matcher := range matchers {
+		if matcher.Name == "namespace" {
+			namespace = matcher.Value
+			break
+		}
+	}
+
+	chks, fetchers, err := s.GetChunkRefs(ctx, userID, namespace, from, through, matchers...)
 	if err != nil {
 		return nil, err
 	}

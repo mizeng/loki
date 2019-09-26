@@ -22,8 +22,8 @@ import (
 const (
 	queryPath       = "/loki/api/v1/query?query=%s&limit=%d&time=%d&direction=%s"
 	queryRangePath  = "/loki/api/v1/query_range?query=%s&limit=%d&start=%d&end=%d&direction=%s"
-	labelsPath      = "/loki/api/v1/label"
-	labelValuesPath = "/loki/api/v1/label/%s/values"
+	labelsPath      = "/loki/api/v1/namespace/%s/label"
+	labelValuesPath = "/loki/api/v1/namespace/%s/label/%s/values"
 	tailPath        = "/loki/api/v1/tail?query=%s&delay_for=%d&limit=%d&start=%d"
 )
 
@@ -65,17 +65,18 @@ func (c *Client) QueryRange(queryStr string, limit int, from, through time.Time,
 }
 
 // ListLabelNames uses the /api/v1/label endpoint to list label names
-func (c *Client) ListLabelNames(quiet bool) (*loghttp.LabelResponse, error) {
+func (c *Client) ListLabelNames(namespace string, quiet bool) (*loghttp.LabelResponse, error) {
+	path := fmt.Sprintf(labelsPath, url.PathEscape(namespace))
 	var labelResponse loghttp.LabelResponse
-	if err := c.doRequest(labelsPath, quiet, &labelResponse); err != nil {
+	if err := c.doRequest(path, quiet, &labelResponse); err != nil {
 		return nil, err
 	}
 	return &labelResponse, nil
 }
 
 // ListLabelValues uses the /api/v1/label endpoint to list label values
-func (c *Client) ListLabelValues(name string, quiet bool) (*loghttp.LabelResponse, error) {
-	path := fmt.Sprintf(labelValuesPath, url.PathEscape(name))
+func (c *Client) ListLabelValues(namespace, name string, quiet bool) (*loghttp.LabelResponse, error) {
+	path := fmt.Sprintf(labelValuesPath, url.PathEscape(namespace), url.PathEscape(name))
 	var labelResponse loghttp.LabelResponse
 	if err := c.doRequest(path, quiet, &labelResponse); err != nil {
 		return nil, err
@@ -112,7 +113,7 @@ func (c *Client) doRequest(path string, quiet bool, out interface{}) error {
 		TLSConfig: c.TLSConfig,
 	}
 
-	client, err := config.NewClientFromConfig(clientConfig, "logcli")
+	client, err := config.NewClientFromConfig(clientConfig, "logcli", false)
 	if err != nil {
 		return err
 	}

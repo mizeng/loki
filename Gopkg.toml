@@ -25,8 +25,14 @@
 #   unused-packages = true
 
 [[constraint]]
+  branch = "es_ns_index"
+  name = "github.com/grafana/loki"
+  source = "https://github.com/mizeng/loki.git"
+
+[[constraint]]
   name = "github.com/cortexproject/cortex"
   branch = "master"
+  source = "https://github.com/mizeng/cortex.git"
 
 [[constraint]]
   name = "github.com/weaveworks/common"

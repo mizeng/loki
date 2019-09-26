@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/go-kit/kit/log/level"
@@ -204,13 +205,17 @@ func (q *Querier) Label(ctx context.Context, req *logproto.LabelRequest) (*logpr
 		return nil, err
 	}
 
+	// req.Name = namespace::label_label
+	namespace := strings.Split(req.Name, "::")[0]
+	labelName := strings.Split(req.Name, "::")[1]
+
 	if req.Values {
-		storeValues, err = q.store.LabelValuesForMetricName(ctx, userID, from, through, "logs", req.Name)
+		storeValues, err = q.store.LabelValuesForMetricName(ctx, userID, namespace, from, through, "logs", labelName)
 		if err != nil {
 			return nil, err
 		}
 	} else {
-		storeValues, err = q.store.LabelNamesForMetricName(ctx, userID, from, through, "logs")
+		storeValues, err = q.store.LabelNamesForMetricName(ctx, userID, namespace, from, through, "logs")
 		if err != nil {
 			return nil, err
 		}

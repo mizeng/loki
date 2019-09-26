@@ -33,6 +33,7 @@ var (
 	instantQuery    = newQuery(true, instantQueryCmd)
 
 	labelsCmd = app.Command("labels", "Find values for a given label.")
+	namespace = labelsCmd.Arg("namespace", "The namespace you want to query.").HintAction(hintActionLabelNames).String()
 	labelName = labelsCmd.Arg("label", "The name of the label.").HintAction(hintActionLabelNames).String()
 )
 
@@ -81,14 +82,14 @@ func main() {
 
 		instantQuery.DoQuery(queryClient, out)
 	case labelsCmd.FullCommand():
-		q := newLabelQuery(*labelName, *quiet)
+		q := newLabelQuery(*namespace, *labelName, *quiet)
 
 		q.DoLabels(queryClient)
 	}
 }
 
 func hintActionLabelNames() []string {
-	q := newLabelQuery("", *quiet)
+	q := newLabelQuery("defaultns", "", *quiet)
 
 	return q.ListLabels(queryClient)
 }
@@ -119,8 +120,9 @@ func newQueryClient(app *kingpin.Application) *client.Client {
 	return client
 }
 
-func newLabelQuery(labelName string, quiet bool) *labelquery.LabelQuery {
+func newLabelQuery(namespace, labelName string, quiet bool) *labelquery.LabelQuery {
 	return &labelquery.LabelQuery{
+		Namespace: namespace,
 		LabelName: labelName,
 		Quiet:     quiet,
 	}

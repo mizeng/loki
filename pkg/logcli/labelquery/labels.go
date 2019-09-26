@@ -8,8 +8,9 @@ import (
 	"github.com/grafana/loki/pkg/loghttp"
 )
 
-// LabelQuery contains all necessary fields to execute label queries and print out the resutls
+// LabelQuery contains all necessary fields to execute label queries and print out the results
 type LabelQuery struct {
+	Namespace string
 	LabelName string
 	Quiet     bool
 }
@@ -28,9 +29,9 @@ func (q *LabelQuery) ListLabels(c *client.Client) []string {
 	var labelResponse *loghttp.LabelResponse
 	var err error
 	if len(q.LabelName) > 0 {
-		labelResponse, err = c.ListLabelValues(q.LabelName, q.Quiet)
+		labelResponse, err = c.ListLabelValues(q.Namespace, q.LabelName, q.Quiet)
 	} else {
-		labelResponse, err = c.ListLabelNames(q.Quiet)
+		labelResponse, err = c.ListLabelNames(q.Namespace, q.Quiet)
 	}
 	if err != nil {
 		log.Fatalf("Error doing request: %+v", err)

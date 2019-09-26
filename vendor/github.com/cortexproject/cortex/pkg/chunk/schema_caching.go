@@ -13,15 +13,15 @@ type schemaCaching struct {
 	cacheOlderThan time.Duration
 }
 
-func (s *schemaCaching) GetReadQueriesForMetric(from, through model.Time, userID string, metricName string) ([]IndexQuery, error) {
+func (s *schemaCaching) GetReadQueriesForMetric(from, through model.Time, userID, namespace string, metricName string) ([]IndexQuery, error) {
 	cFrom, cThrough, from, through := splitTimesByCacheability(from, through, model.TimeFromUnix(mtime.Now().Add(-s.cacheOlderThan).Unix()))
 
-	cacheableQueries, err := s.Schema.GetReadQueriesForMetric(cFrom, cThrough, userID, metricName)
+	cacheableQueries, err := s.Schema.GetReadQueriesForMetric(cFrom, cThrough, userID, namespace, metricName)
 	if err != nil {
 		return nil, err
 	}
 
-	activeQueries, err := s.Schema.GetReadQueriesForMetric(from, through, userID, metricName)
+	activeQueries, err := s.Schema.GetReadQueriesForMetric(from, through, userID, namespace, metricName)
 	if err != nil {
 		return nil, err
 	}
@@ -29,15 +29,15 @@ func (s *schemaCaching) GetReadQueriesForMetric(from, through model.Time, userID
 	return mergeCacheableAndActiveQueries(cacheableQueries, activeQueries), nil
 }
 
-func (s *schemaCaching) GetReadQueriesForMetricLabel(from, through model.Time, userID string, metricName string, labelName string) ([]IndexQuery, error) {
+func (s *schemaCaching) GetReadQueriesForMetricLabel(from, through model.Time, userID, namespace string, metricName string, labelName string) ([]IndexQuery, error) {
 	cFrom, cThrough, from, through := splitTimesByCacheability(from, through, model.TimeFromUnix(mtime.Now().Add(-s.cacheOlderThan).Unix()))
 
-	cacheableQueries, err := s.Schema.GetReadQueriesForMetricLabel(cFrom, cThrough, userID, metricName, labelName)
+	cacheableQueries, err := s.Schema.GetReadQueriesForMetricLabel(cFrom, cThrough, userID, namespace, metricName, labelName)
 	if err != nil {
 		return nil, err
 	}
 
-	activeQueries, err := s.Schema.GetReadQueriesForMetricLabel(from, through, userID, metricName, labelName)
+	activeQueries, err := s.Schema.GetReadQueriesForMetricLabel(from, through, userID, namespace, metricName, labelName)
 	if err != nil {
 		return nil, err
 	}
@@ -45,15 +45,15 @@ func (s *schemaCaching) GetReadQueriesForMetricLabel(from, through model.Time, u
 	return mergeCacheableAndActiveQueries(cacheableQueries, activeQueries), nil
 }
 
-func (s *schemaCaching) GetReadQueriesForMetricLabelValue(from, through model.Time, userID string, metricName string, labelName string, labelValue string) ([]IndexQuery, error) {
+func (s *schemaCaching) GetReadQueriesForMetricLabelValue(from, through model.Time, userID, namespace string, metricName string, labelName string, labelValue string) ([]IndexQuery, error) {
 	cFrom, cThrough, from, through := splitTimesByCacheability(from, through, model.TimeFromUnix(mtime.Now().Add(-s.cacheOlderThan).Unix()))
 
-	cacheableQueries, err := s.Schema.GetReadQueriesForMetricLabelValue(cFrom, cThrough, userID, metricName, labelName, labelValue)
+	cacheableQueries, err := s.Schema.GetReadQueriesForMetricLabelValue(cFrom, cThrough, userID, namespace, metricName, labelName, labelValue)
 	if err != nil {
 		return nil, err
 	}
 
-	activeQueries, err := s.Schema.GetReadQueriesForMetricLabelValue(from, through, userID, metricName, labelName, labelValue)
+	activeQueries, err := s.Schema.GetReadQueriesForMetricLabelValue(from, through, userID, namespace, metricName, labelName, labelValue)
 	if err != nil {
 		return nil, err
 	}
@@ -62,15 +62,15 @@ func (s *schemaCaching) GetReadQueriesForMetricLabelValue(from, through model.Ti
 }
 
 // If the query resulted in series IDs, use this method to find chunks.
-func (s *schemaCaching) GetChunksForSeries(from, through model.Time, userID string, seriesID []byte) ([]IndexQuery, error) {
+func (s *schemaCaching) GetChunksForSeries(from, through model.Time, userID, namespace string, seriesID []byte) ([]IndexQuery, error) {
 	cFrom, cThrough, from, through := splitTimesByCacheability(from, through, model.TimeFromUnix(mtime.Now().Add(-s.cacheOlderThan).Unix()))
 
-	cacheableQueries, err := s.Schema.GetChunksForSeries(cFrom, cThrough, userID, seriesID)
+	cacheableQueries, err := s.Schema.GetChunksForSeries(cFrom, cThrough, userID, namespace, seriesID)
 	if err != nil {
 		return nil, err
 	}
 
-	activeQueries, err := s.Schema.GetChunksForSeries(from, through, userID, seriesID)
+	activeQueries, err := s.Schema.GetChunksForSeries(from, through, userID, namespace, seriesID)
 	if err != nil {
 		return nil, err
 	}
